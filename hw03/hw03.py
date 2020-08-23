@@ -1,7 +1,8 @@
 HW_SOURCE_FILE = 'hw03.py'
 
 
-from math import log 
+
+from math import log, floor
 #from operator import pow
 
 #############
@@ -30,9 +31,9 @@ def num_sevens(n):
     True
     """
     if n // 10 == 0 and n == 7:
-        return 1
-    elif n // 10 == 0 and n != 7:
-        return 0
+        return 1 
+    if n // 10 == 0 and n != 7:
+        return 0 
     else:
         return num_sevens(n // 10) + num_sevens(n % 10) 
 
@@ -68,19 +69,37 @@ def pingpong(n):
     >>> check(HW_SOURCE_FILE, 'pingpong', ['Assign', 'AugAssign'])
     True
     """
-    if n == 1:
-        return 1
-    if n == 2:
-        return 2
-    if (n - 1) % 7 == 0 or num_sevens(n - 1) != 0:  # reverse the sequence
-        return pingpong(n - 2) 
+
+    def signal(n):
+        """ if return value is odd, pingpong(n) = pingpong(n - 1) + 1
+        elsewise, pingpong(n) = pingpong(n - 1) - 1
+        """
+
+        if n == 1 or n == 2:
+            return 1
+        if n % 7 == 0 or num_sevens(n) != 0:
+            return signal(n - 1) + 1
+        else:
+            return signal(n - 1)
+
+    def is_even(x):
+        if x == 0:
+            return True
+        else:
+            return is_odd(x - 1)
+
+    def is_odd(x):
+        if x == 0:
+            return False
+        return is_even(x - 1)
+
+    if n // 10 == 0:
+        if n < 7:
+            return n
+    if is_odd(signal(n - 1)):
+        return pingpong(n - 1) + 1 
     else: 
-        return 2 * pingpong(n - 1) - pingpong(n - 2) 
-
-            
-
-
-
+        return pingpong(n - 1) - 1 
 
 def count_change(amount):
     """Return the number of ways to make change for amount.
@@ -98,17 +117,18 @@ def count_change(amount):
     >>> check(HW_SOURCE_FILE, 'count_change', ['While', 'For'])
     True
     """
+
+    def count_par(n, m):
+        if n == 0:
+            return 1 
+        if n < 0 or m == 0:
+            return 0 
+        else:
+            return count_par(n - m, m) + count_par(n, m // 2)
+
     k = floor(log(amount)/log(2))
-    def ct_rec(n):
-        return ct_rec(n - pow(2, k), pow(2, k - 1)) + ct_rec(n, pow(2, k-1))
-
-    return ct_rec(amount, pow(2, k))
-
-
-     
-
-
-
+    m = pow(2, k)
+    return count_par(amount, m)
 
 
 def flatten(lst):
