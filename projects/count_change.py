@@ -41,8 +41,7 @@ def is_leaf(t):
     return False
 
 def change_partition(amount):
-    """
-
+    """By assumption, we know we have change coins 1-cent, 2-cents, 4-cents, and so on. This function will build a binary tree for all possible combinations of the change coins. The leaves of this tree could be 'True' or 'False'.
     """
 
     def part_tree(n, m):
@@ -61,14 +60,17 @@ def change_partition(amount):
     return part_tree(amount, l)
 
 
-def print_tree(t):
-    print_partition(t)
-    print_total(t)
-
-
-
-
 def print_partition(t, par=[]):
+    """print the partition tree
+    >>> t = change_partition(7)
+    >>> print_partition(t)
+    1 + 2 + 4
+    1 + 1 + 1 + 4
+    1 + 2 + 2 + 2
+    1 + 1 + 1 + 2 + 2
+    1 + 1 + 1 + 1 + 1 + 2
+    1 + 1 + 1 + 1 + 1 + 1 + 1
+    """
 
     if is_leaf(t):
         if label(t) == True:
@@ -81,6 +83,12 @@ def print_partition(t, par=[]):
 
 
 def print_total(t):
+    """print total number of combinations
+    >>> t = change_partition(7)
+    >>> print_total(t)
+    6
+    """
+
     def count_leaves(t):
         if is_leaf(t):
             if label(t) == True:
@@ -91,6 +99,10 @@ def print_total(t):
     print("total partitions: ", str(count_leaves(t)))
     
 
+
+def print_tree(t):
+    print_partition(t)
+    print_total(t)
 
 
 
