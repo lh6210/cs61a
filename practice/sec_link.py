@@ -11,11 +11,9 @@ def is_link(s):
     >>> is_link(four) 
     True
     """
-    if type(s) != list:
+    if type(s) != list or len(s) !=2:
         return False
-    if len(s) != 2:
-        return False
-    if s[1] == empty:
+    elif s[1] == empty:
         return True
     else:
         return is_link(s[1])
@@ -81,11 +79,15 @@ def extend_link(s, t):
     >>> l2 = link(3, link(4, link(5)))
     >>> extend_link(l1, l2)
     [2, [1, [3, [4, [5, 'empty']]]]]
+    >>> four = link(1, link(2, link(3, link(4))))
+    >>> extend_link(four, four)
+    [1, [2, [3, [4, [1, [2, [3, [4, 'empty']]]]]]]]
+    >>> extend_link(l1, four)
+    [2, [1, [1, [2, [3, [4, 'empty']]]]]]
     """
     #assert is_link(s) and is_link(t), "s and t must be linked lists"
     if rest(s) == empty:
-        s[1] = t
-        return s
+        return link(first(s), t)
     else:
         return link(first(s), extend_link(rest(s), t))
     
