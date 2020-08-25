@@ -25,36 +25,6 @@ def is_leaf(tree):
         return False
     return not branches(tree)
 
-
-def fib(n):
-    if n == 1:
-        return 1
-    elif n == 2:
-        return 1
-    else:
-        return fib(n - 1) + fib(n - 2)
-
-#def fib_tree(n):
-#    if n == 1: 
-#        return tree(1)
-#    elif n == 2:
-#        return tree(1)
-#    else:
-#        rt_label = fib(n)
-#        return tree(rt_label, [fib_tree(n - 2), fib_tree(n - 1)])
-#
-
-
-def fib_tree(n):
-    if n == 0 or n == 1:
-        return tree(n)
-    else:
-        left_subT = fib_tree(n - 2)
-        right_subT = fib_tree(n - 1)
-        rt_label = label(left_subT) + label(right_subT)
-        return tree(rt_label, [left_subT, right_subT])
-
-
 def count_leaves(tree):
     if is_leaf(tree):   # base case
         return 1
@@ -87,13 +57,6 @@ def count_leaves(tree):
 #        print_parts(left, partition + [m])
 #        print_parts(right, partition)
 #
-def decorate(fn):
-    def fn(x):
-        print(fn, '->', x)
-        return fn(x)
-    return fn
-
-
 
 def leaves(tree):
     if is_leaf(tree):
@@ -278,15 +241,30 @@ def partition(n, m):
     left, right = partition(n - m, m), partition(n, m - 1)
     return tree(m, [left, right])
 
-def print_parts(tree, part=[]):
-    if is_leaf(tree):
-        if label(tree):
-            print(' + '.join(part))
-    else:
-        m = str(label(tree))
-        left, right = branches(tree)[0], branches(tree)[1]
-        print_parts(left, part + [m])
-        print_parts(right, part)
+
+def sym_print_tree(symb):
+    """
+    symb is the string that connects all of the elements in a list. More specifically, the list being referred to is an argument in function print_parts(tree, part)
+    n_choose_k_tree, partition_tree(n, m) need this function to display all sorts of combinations
+    usage of this higher-order function:
+    eg. 
+    >>> t = partition(5)
+    >>> sym_print_tree(' + ')(t)
+
+    """
+
+    assert type(symb) == str, "symb must be str type"
+    def print_parts(tree, part=[]):
+        if is_leaf(tree):
+            if label(tree):
+                print(str(symb).join(part))
+        else:
+            m = str(label(tree))
+            left, right = branches(tree)[0], branches(tree)[1]
+            print_parts(left, part + [m])
+            print_parts(right, part)
+    return print_parts
+
 
 
 
