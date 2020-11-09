@@ -44,3 +44,76 @@ def evens(start, end):
         yield even 
         even += 2
 
+
+class Person:
+    def __init__(self, firstname, lastname):
+        self.first = firstname
+        self.last = lastname
+
+    @property
+    def fullname(self):
+        return self.first + ' ' + self.last
+
+    @fullname.setter
+    def fullname(self, name):
+        firstname, lastname = name.split()
+        self.first = firstname
+        self.last = lastname
+
+    @fullname.deleter
+    #usage: del person.fullname"""
+    def fullname(self):
+        self.first ='' 
+        self.last = ''
+        
+    @property
+    def email(self):
+            return '{}.{}@email.com'.format(self.first, self.last)
+
+
+numerals = {'I':1, 'J':2, 'K':3, 'L':4, 'M':5}
+
+# section 2.4.11
+def mutable_link():
+    """Return a functional implementation of a mutable linked list."""
+    contents = [] 
+    def dispatch(message, value=None):
+        nonlocal contents;
+        if message == 'len':
+            return len_link(contents)
+        elif message == 'getitem':
+            return getitem_link(contents, value)
+        elif message == 'push_first':
+            contents = link(value, contents)
+        elif message == 'pop_first':
+            f = first(contents)
+            contents = rest(contents)
+            return f
+        elif message == 'str':
+            return join_link(contents, ", ")
+    return dispatch
+
+def to_mutable_link(source):
+    """Return a functional list with the same contents as source."""
+    s = mutable_link();
+    for element in reversed(source):
+        s('push_first', element)
+    return s
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
