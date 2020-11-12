@@ -101,11 +101,23 @@ def to_mutable_link(source):
     return s
 
 
+# generator for sequences in general cases: list and dictionary
+def gt(seq):
+    current = seq[0]
+    index = 0
+    while index <= len(seq) - 1:
+        yield current
+        index += 1
+        current = seq[index]
 
+seq1 = ['red', 'blue', 'yellow', 'teal']
+g1 = gt(seq1)
 
+seq2 = {'color': 'red', 'weather': 'windy', 'drink': 'milk tea'}
+g2 = gt(seq2)
 
-
-
+seq3 = "Hello world"
+g3 = gt(seq3)
 
 
 
